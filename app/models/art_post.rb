@@ -1,0 +1,2 @@
+class ArtPost < ApplicationRecord
+end
