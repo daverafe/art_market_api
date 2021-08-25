@@ -1,5 +1,6 @@
 class ArtPostsController < ApplicationController
   before_action :set_art_post, only: [:show, :update, :destroy]
+  skip_before_action :authorized, only: [:index, :show]
 
   # GET /art_posts
   def index
