@@ -1,6 +1,6 @@
 class ArtPostsController < ApplicationController
   before_action :set_art_post, only: [:show, :update, :destroy]
-  skip_before_action :authorized, only: [:index, :show]
+  # skip_before_action :authorized, only: [:index, :show, :create, :destroy, :update]
 
   # GET /art_posts
   def index
@@ -19,7 +19,8 @@ class ArtPostsController < ApplicationController
     @art_post = ArtPost.new(art_post_params)
 
     if @art_post.save
-      render json: @art_post, status: :created, location: @art_post
+      image_url = rails_blob_path(@art_post.image)
+      render json: {art_post: @art_post, image: image_url} , status: :created, location: @art_post
     else
       render json: @art_post.errors, status: :unprocessable_entity
     end
@@ -47,6 +48,6 @@ class ArtPostsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def art_post_params
-      params.require(:art_post).permit(:title, :price, :description, :sold, :user_id)
+      params.require(:art_post).permit(:title, :image, :price, :description, :sold, :user_id)
     end
 end
