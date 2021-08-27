@@ -38,6 +38,7 @@ class ArtPostsController < ApplicationController
   # DELETE /art_posts/1
   def destroy
     @art_post.destroy
+    render json: {message: "Art Post Successfully Deleted"}
   end
 
   private
