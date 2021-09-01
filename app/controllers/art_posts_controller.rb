@@ -2,7 +2,6 @@ class ArtPostsController < ApplicationController
   before_action :set_art_post, only: [:show, :update, :destroy]
   # skip_before_action :authorized, only: [:index, :show, :create, :destroy, :update]
 
-  include Rails.application.routes.url_helpers
   # GET /art_posts
   def index
     @art_posts = ArtPost.all
@@ -18,8 +17,8 @@ class ArtPostsController < ApplicationController
   # POST /art_posts
   def create
     @art_post = ArtPost.new(art_post_params)
-    @art_post.image.attach(params[:image])
     if @art_post.save
+      @art_post.image.attach(params[:image])
       @image_url = rails_blob_path(@art_post.image)
       render json: {art_post: @art_post, image_url: @image_url}
     else
