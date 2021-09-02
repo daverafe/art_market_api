@@ -1,6 +1,6 @@
 class ArtPostsController < ApplicationController
   before_action :set_art_post, only: [:show, :update, :destroy]
-  # skip_before_action :authorized, only: [:index, :show, :create, :destroy, :update]
+  # skip_before_action :authorized, only: [:index, :show]
 
   # GET /art_posts
   def index
@@ -17,10 +17,11 @@ class ArtPostsController < ApplicationController
   # POST /art_posts
   def create
     @art_post = ArtPost.new(art_post_params)
+    @art_post.image.attach(params[:image])
+    @image_url = rails_blob_path(@art_post.image)
+    @art_post.url = @image_url
     if @art_post.save
-      @art_post.image.attach(params[:image])
-      @image_url = rails_blob_path(@art_post.image)
-      render json: {art_post: @art_post, image_url: @image_url}
+      render json: @art_post
     else
       render json: @art_post.errors, status: :unprocessable_entity
     end
